@@ -8,6 +8,10 @@ function daysBetween(dateStr1, dateStr2) {
   return Math.max(0, Math.round(diff));
 }
 
+function todayStr() {
+  return new Date().toISOString().slice(0, 10);
+}
+
 export default function CheckInForm({ villas, onSubmit, onCancel, submitting }) {
   const [villaId, setVillaId] = useState('');
   const [checkIn, setCheckIn] = useState('');
@@ -47,12 +51,15 @@ export default function CheckInForm({ villas, onSubmit, onCancel, submitting }) 
       setError('Guest name is required');
       return;
     }
+    const nights = (numberOfNights.trim() && parseInt(numberOfNights, 10) > 0)
+      ? numberOfNights.trim()
+      : String(daysBetween(checkIn.trim(), checkOut.trim()));
     onSubmit({
       villaId: villaId.trim(),
       checkIn: checkIn.trim(),
       checkOut: checkOut.trim(),
       name: name.trim(),
-      numberOfNights: numberOfNights.trim() || undefined,
+      numberOfNights: nights || undefined,
       bookingPlatform: bookingPlatform.trim() || undefined,
     });
   }
@@ -79,8 +86,14 @@ export default function CheckInForm({ villas, onSubmit, onCancel, submitting }) 
         <span>Check-in date</span>
         <input
           type="date"
+          name="checkIn"
+          min={todayStr()}
           value={checkIn}
           onChange={e => setCheckIn(e.target.value)}
+          onBlur={e => {
+            const ci = e.target.value;
+            if (ci && checkOut) setNumberOfNights(String(daysBetween(ci, checkOut)));
+          }}
           required
         />
       </label>
@@ -88,8 +101,14 @@ export default function CheckInForm({ villas, onSubmit, onCancel, submitting }) 
         <span>Check-out date</span>
         <input
           type="date"
+          name="checkOut"
+          min={checkIn || todayStr()}
           value={checkOut}
           onChange={e => setCheckOut(e.target.value)}
+          onBlur={e => {
+            const co = e.target.value;
+            if (checkIn && co) setNumberOfNights(String(daysBetween(checkIn, co)));
+          }}
           required
         />
       </label>
