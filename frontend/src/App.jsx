@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import RunPage from './pages/RunPage';
+import CheckInsPage from './pages/CheckInsPage';
 import './styles/App.css';
 
 function PrivateRoute({ children }) {
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<PrivateRoute><HomePage /></PrivateRoute>} />
           <Route path="/run/:villaId" element={<PrivateRoute><RunPage /></PrivateRoute>} />
+          <Route path="/check-ins" element={<PrivateRoute><CheckInsPage /></PrivateRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

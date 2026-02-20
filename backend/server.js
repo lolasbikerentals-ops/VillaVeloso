@@ -120,6 +120,88 @@ function shortCheckedAt() {
   return `${y}-${m}-${day} ${h}:${min}`;
 }
 
+// --- Check-ins: read and create ---
+// Check_Ins columns: check_in_id, villa_id, check_in, check_out, name, number_of_nights, booking_platform
+function shortCheckInId() {
+  const d = new Date();
+  const yy = String(d.getFullYear()).slice(-2);
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  const prefix = `CI-${yy}${mm}${dd}`;
+  return prefix;
+}
+
+app.get('/api/check-ins', async (req, res) => {
+  try {
+    const villaId = req.query.villaId || req.query.villa_id;
+    const from = req.query.from;
+    const to = req.query.to;
+    const rows = await sheetsLib.readSheet(SHEET_ID, 'Check_Ins');
+    const list = sheetsLib.rowsToObjects(rows);
+    let filtered = list.filter(r => r.check_in_id);
+    if (villaId) {
+      filtered = filtered.filter(r => String(r.villa_id || '').trim().toLowerCase() === String(villaId).trim().toLowerCase());
+    }
+    if (from) {
+      filtered = filtered.filter(r => {
+        const d = String(r.check_in || '').trim();
+        return d && d >= from;
+      });
+    }
+    if (to) {
+      filtered = filtered.filter(r => {
+        const d = String(r.check_out || '').trim();
+        return d && d <= to;
+      });
+    }
+    const sorted = filtered.sort((a, b) => {
+      const da = String(a.check_in || '').trim();
+      const db = String(b.check_in || '').trim();
+      return db.localeCompare(da);
+    });
+    res.json(sorted);
+  } catch (e) {
+    console.error('Check-ins GET error:', e);
+    res.status(500).json({ error: e.message || 'Server error' });
+  }
+});
+
+app.post('/api/check-ins', requireAuth, async (req, res) => {
+  try {
+    const { villaId, checkIn, checkOut, name, numberOfNights, bookingPlatform } = req.body || {};
+    if (!villaId || !checkIn || !checkOut || !name) {
+      return res.status(400).json({ error: 'villaId, checkIn, checkOut and name required' });
+    }
+    const prefix = shortCheckInId();
+    const rows = await sheetsLib.readSheet(SHEET_ID, 'Check_Ins');
+    const list = sheetsLib.rowsToObjects(rows);
+    const todayIds = list.filter(r => String(r.check_in_id || '').startsWith(prefix)).map(r => r.check_in_id);
+    let seq = 1;
+    for (const id of todayIds) {
+      const m = /-(\d+)$/.exec(id);
+      if (m) seq = Math.max(seq, parseInt(m[1], 10) + 1);
+    }
+    const checkInId = `${prefix}-${String(seq).padStart(3, '0')}`;
+    const numNights = numberOfNights != null ? String(numberOfNights).trim() : '';
+    const platform = String(bookingPlatform ?? '').trim();
+    const row = [
+      checkInId,
+      String(villaId).trim(),
+      String(checkIn).trim(),
+      String(checkOut).trim(),
+      String(name).trim(),
+      numNights,
+      platform,
+    ];
+    await sheetsLib.appendRow(SHEET_ID, 'Check_Ins', row);
+    res.json({ ok: true, checkInId });
+  } catch (e) {
+    console.error('Check-ins POST error:', e);
+    res.status(500).json({ error: e.message || 'Server error' });
+  }
+});
+
+// --- Check runs: create run + log entries ---
 app.post('/api/check-runs', requireAuth, async (req, res) => {
   try {
     const { villaId, items } = req.body || {};

@@ -1,6 +1,6 @@
 /**
  * Google Sheets helpers for Villa Checklist.
- * Expects sheets: Villas, Inventory, Check_Log, Check_Runs, Staff
+ * Expects sheets: Villas, Inventory, Check_Log, Check_Runs, Check_Ins, Staff
  * Column names as per plan (competed_at, checked_by, login, password).
  */
 

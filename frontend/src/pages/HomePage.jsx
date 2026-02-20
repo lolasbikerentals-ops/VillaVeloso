@@ -34,7 +34,23 @@ export default function HomePage() {
       {loading && <p className="loading">Loading villas…</p>}
       {err && <p className="error">{err}</p>}
       {!loading && !err && (
-        <VillaSelector villas={villas} onSelect={handleStartCheck} />
+        <div className="home-actions">
+          <section className="home-action-section">
+            <h2 className="home-action-title">Run checklist</h2>
+            <VillaSelector villas={villas} onSelect={handleStartCheck} />
+          </section>
+          <section className="home-action-section">
+            <h2 className="home-action-title">Check-ins</h2>
+            <p className="hint">Input and view guest check-ins</p>
+            <button
+              type="button"
+              className="btn btn-primary home-action-btn"
+              onClick={() => navigate('/check-ins')}
+            >
+              Manage check-ins →
+            </button>
+          </section>
+        </div>
       )}
     </div>
   );

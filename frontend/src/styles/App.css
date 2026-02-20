@@ -289,3 +289,141 @@ body {
   margin: 0 0 24px;
   color: var(--text-muted);
 }
+
+/* Home actions */
+.home-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.home-action-section {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--border);
+}
+.home-action-title {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+  color: var(--primary);
+}
+.home-action-btn {
+  width: auto;
+  margin-top: 12px;
+}
+
+/* Check-ins page */
+.check-ins-page .header {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.check-ins-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+.check-ins-controls .filter-label {
+  flex: 1;
+  min-width: 160px;
+}
+.check-ins-controls .filter-label span {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.check-ins-controls select {
+  width: 100%;
+  min-height: var(--touch);
+  padding: 0 12px;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.check-in-form-wrapper {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+}
+.check-in-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.check-in-form h3 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+  color: var(--primary);
+}
+.check-in-form label {
+  display: block;
+}
+.check-in-form label span {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+.check-in-form input,
+.check-in-form select {
+  width: 100%;
+  min-height: var(--touch);
+  padding: 0 12px;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.check-in-form .form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+.check-in-form .form-actions .btn-primary {
+  margin-top: 0;
+  width: auto;
+}
+.check-ins-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.check-in-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+.check-in-card-main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.check-in-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+.check-in-villa {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+.check-in-card-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.check-in-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
