@@ -395,6 +395,7 @@ body {
 .check-in-form label {
   display: block;
   min-width: 0;
+  overflow: hidden;
 }
 .check-in-form label span {
   display: block;
@@ -415,10 +416,14 @@ body {
   box-sizing: border-box;
 }
 .check-in-form input[type="date"] {
-  /* Prevent iOS date inputs from overflowing */
+  /* Prevent iOS date inputs from overflowing - override native styling */
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
   width: 100%;
   max-width: 100%;
   min-width: 0;
+  box-sizing: border-box;
 }
 .check-in-form .form-actions {
   display: flex;
