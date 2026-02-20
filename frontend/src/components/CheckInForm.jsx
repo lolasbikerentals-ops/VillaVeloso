@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BOOKING_PLATFORMS } from '../config/bookingPlatforms';
 
 function daysBetween(dateStr1, dateStr2) {
   const d1 = new Date(dateStr1);
@@ -114,12 +115,15 @@ export default function CheckInForm({ villas, onSubmit, onCancel, submitting }) 
       </label>
       <label>
         <span>Booking platform</span>
-        <input
-          type="text"
+        <select
           value={bookingPlatform}
           onChange={e => setBookingPlatform(e.target.value)}
-          placeholder="e.g. Airbnb, Booking.com"
-        />
+        >
+          <option value="">Select platform</option>
+          {BOOKING_PLATFORMS.map(p => (
+            <option key={p} value={p}>{p}</option>
+          ))}
+        </select>
       </label>
       {error && <p className="error">{error}</p>}
       <div className="form-actions">
